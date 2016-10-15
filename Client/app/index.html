@@ -10,20 +10,17 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css" />
     <!-- endbower -->
     <!-- endbuild -->
-
-    <!-- build:css(.) styles/modules.css -->
-    <link rel="stylesheet" href="bower_components/angular-datatables/dist/css/angular-datatables.min.css">
-    <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css">
-    <!-- endbuild -->
-
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+    <link rel="stylesheet" href="bower_components/select2/dist/css/select2.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link href="http://code.jboxcdn.com/0.3.2/jBox.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
@@ -83,6 +80,8 @@
     <script src="bower_components/angular-ui-select2/src/select2.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <!-- endbower -->
 
     <!-- endbuild -->
@@ -90,8 +89,8 @@
     <!-- build:js(.) scripts/modules.js -->
         <script src="scripts/admin_lte_app.js"></script>
     <!-- endbuild -->
-   
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->       
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
@@ -107,6 +106,7 @@
         <script src="scripts/directives/role/usertype.js"></script>
         <script src="scripts/services/role/dataservicerole.js"></script>
         <script src="scripts/services/faculty/facultyService.js"></script>
+        <script src="scripts/services/question.js"></script>
         <script src="scripts/controllers/role/test.js"></script>
         <script src="scripts/controllers/role/roletable.js"></script>
         <script src="scripts/controllers/appointments/appointment.js"></script>
@@ -116,6 +116,9 @@
         <script src="scripts/controllers/faculty/main.js"></script>
         <script src="scripts/controllers/appointments/appointment-requests.js"></script>
         <script src="scripts/controllers/appointments/appointment-table.js"></script>
+        <script src="scripts/controllers/appointments/lecture-avilability.js"></script>
+        <script src="scripts/controllers/questions.js"></script>
+
         <!-- endbuild -->
 </body>
 </html>

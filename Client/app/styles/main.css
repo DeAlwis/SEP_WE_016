@@ -16,12 +16,26 @@
 .sliit-logo {
   margin: 0 auto;
   max-width: 100px;
-}
 
-.action-wrapper {
-  border-left: 1px solid #f4f4f4;
 }
 
 .text-left {
 	text-align: left;
+}
+
+.data-row {
+  margin-top: 20px;
+}
+
+.time-slot-wrapper {
+  margin-bottom: 10px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.time-slot-wrapper input[type=number] {
+  max-width: 80px;
+  text-align: right;
 }

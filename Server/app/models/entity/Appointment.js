@@ -10,9 +10,13 @@ var Appointment = connection.define('Appointment',{
     appointmentDate : Sequelize.DATEONLY,
     appointmentStartTime : Sequelize.TIME,
     appointmentEndTime : Sequelize.TIME,
+    appointmentTitle : Sequelize.STRING,
     appointmentSmallBref : Sequelize.STRING,
+    appointmentComment: Sequelize.STRING,
     status: Sequelize.BOOLEAN,
-    status: Sequelize.BOOLEAN
+    approved: Sequelize.BOOLEAN,
+    reShedule: Sequelize.BOOLEAN,
+    cancel : Sequelize.BOOLEAN,
 },{
     tableName: 'appointment',
     updatedAt: 'updatedAt',

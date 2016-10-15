@@ -6,6 +6,7 @@
 var Models = {};
 
 Models.Lecturer = require('./entity/Lecturer');
+Models.LecturerAvailability = require('./entity/LecturerAvailability');
 Models.User = require('./entity/User');
 Models.Student = require('./entity/Student');
 Models.UserType = require('./entity/UserType');
@@ -18,8 +19,10 @@ Models.Center = require('./entity/Center');
 Models.Faculty = require('./entity/Faculty');
 Models.Department = require('./entity/Department');
 Models.Batch = require('./entity/Batch');
-Models.Request = require('./entity/Request');
+//Models.Request = require('./entity/Request');
 Models.Room = require('./entity/Room');
-Models.Appointment = require('./entity/Appointment')
+Models.Appointment = require('./entity/Appointment');
+Models.QuestionTemplate = require('./entity/QuestionTemplate');
+
 
 module.exports = Models;

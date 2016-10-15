@@ -11,7 +11,6 @@ var Request = connection.define('Request',{
     requestDate : Sequelize.DATEONLY,
     requestStartTime : Sequelize.TIME,
     requestEndTime : Sequelize.TIME,
-    requestTitle : Sequelize.STRING,
     requestSmallBref : Sequelize.STRING,
     status: Sequelize.BOOLEAN
 },{
