@@ -32,12 +32,14 @@ UserAuthenticateController = function() {
 
                                 console.log(usertype.userRoleName);
                                 console.log(user.userFullname);
+                                console.log( user.id);
 
                                 var user_data = {
                                     full_name: user.userFullname,
                                     username: user.userUserName,
                                     email: user.userEmail,
-                                    usertype:usertype.userRoleName
+                                    usertype:usertype.userRoleName,
+                                    userId: user.id
                                 }
 
                                 // create a token

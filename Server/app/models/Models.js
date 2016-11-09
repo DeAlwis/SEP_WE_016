@@ -14,9 +14,10 @@ Models.Center = require('./entity/Center');
 Models.Faculty = require('./entity/Faculty');
 Models.Department = require('./entity/Department');
 Models.Batch = require('./entity/Batch');
-Models.Request = require('./entity/Request');
+//Models.Request = require('./entity/Request');
 Models.Room = require('./entity/Room');
-Models.Appointment = require('./entity/Appointment')
+Models.Appointment = require('./entity/Appointment');
+Models.TimeSlot = require('./entity/TimeSlot');
 
 // Required by Login 
 Models.UserRole = require('./entity/UserRole');

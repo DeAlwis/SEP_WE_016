@@ -1,0 +1,140 @@
+<div side-bar></div>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-building-o"></i> Center
+            <small>Admin Center page for any management level purposes of centers</small>
+        </h1>
+    </section>
+    <br>
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                <i class="fa fa-plus"></i> Add Center <span ng-bind="CenterName"></span>
+            </h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <form class="form-horizontal" name="centerForm" ng-submit="submitCenterForm(centerForm.$valid)" novalidate>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label class="pull-right">Center Name</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="centerName" required="true" placeholder="new center name eg:Malabe center"
+                               ng-model="CenterName">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label class="pull-right">Subject</label>
+                    </div>
+                    <div class="col-sm-10" ng-model="subjectsSelected">
+                        <div ng-repeat="subject in subjects">
+                            <input type="checkbox" checklist-model="centerSubject.selectedSubjects" checklist-value="subject.id">
+                            <label>{{subject.subjectName}}</label><br>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-success pull-right" style="margin-top: 5px;">
+                    <i class="fa fa-plus"></i>
+                    Create Center
+                </button>
+            </div>
+        </form>
+        <div class="box box-info" style="margin-top: 25px;">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    <i class="fa fa-list"></i> Center List
+                </h3>
+                <span class="pull-right">
+                            Search: <input ng-model="$ctrl.query" class="form-horizontal" placeholder="Search any word" />
+                        </span>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <div class="box-body">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Center Name</th>
+                        <th>Created Date</th>
+                        <th>Updated Date</th>
+                        <th>Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="center in centers | filter:$ctrl.query">
+                        <td>{{center.id}}</td>
+                        <td>{{center.centerName}}</td>
+                        <td>{{center.createdAt}}</td>
+                        <td>{{center.updatedAt}}</td>
+                        <td>
+                            <button class="btn-warning" ng-click="deleteCenter(center.id)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <button class="btn-success" ng-click="updateCenterDetails(center)" data-toggle="modal" data-target="#myModal">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Content Header (Page header) -->
+                    <section class="content-header">
+                        <h1>
+                            <i class="fa fa-pencil"></i> Update Center {{updateCenter.centerName}}
+                        </h1>
+                    </section>
+                    <hr>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label class="pull-right">Center Name</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="centerName" required="true" placeholder="new center name eg:Malabe center"
+                                           ng-model="updateCenter.centerName">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label class="pull-right">Subject</label>
+                                </div>
+                                <div class="col-sm-10" ng-model="subjectsSelected">
+                                    <div ng-repeat="subject in subjects">
+                                        <input type="checkbox" checklist-model="updateCenterSubject.selectedSubjects" checklist-value="subject.id" ng-checked="checkAvailable(subject.id)">
+                                        <label>{{subject.subjectName}}</label><br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-success pull-right" ng-click="updateCenterInfoToServer()">
+                                    <i class="fa fa-pencil"></i>
+                                    update {{updateCenter.centerName}} center
+                                </button>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>

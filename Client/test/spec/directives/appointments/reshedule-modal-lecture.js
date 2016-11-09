@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: navBar', function () {
+describe('Directive: appointments/resheduleModalLecture', function () {
 
   // load the directive's module
   beforeEach(module('armsAngularApp'));
@@ -13,8 +13,8 @@ describe('Directive: navBar', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<nav-bar></nav-bar>');
+    element = angular.element('<appointments/reshedule-modal-lecture></appointments/reshedule-modal-lecture>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the navBar directive');
+    expect(element.text()).toBe('this is the appointments/resheduleModalLecture directive');
   }));
 });

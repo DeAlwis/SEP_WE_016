@@ -6,24 +6,23 @@ var express = require('express');
 var router = express.Router();
 var ControllerMap = require('../../Controller/ControllerMap');
 var RequestController = ControllerMap.RequestController;
+
 router.get('/', function(req, res, next) {
     RequestController.get(res);
 });
 
-router.get('/get-student-requests', function(req, res, next) {
-	//console.log('=============================================='+ re);
-    RequestController.getStudentRequests(req.query,res);
-});
 router.post('/create', function(req, res, next) {
-    console.log(req.body);
     RequestController.create(req.body, res);
 });
+
 router.put('/', function(req, res, next) {
     RequestController.update(req.body, res);
 });
+
 router.delete('/', function(req, res, next) {
     RequestController.delete(req.body, res);
 });
+
 router.get('/:studentNo', function(req, res, next) {
     RequestController.getStudent(req.params.studentNo, res);
 });

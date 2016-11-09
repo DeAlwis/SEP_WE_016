@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: appointmentDataservice', function () {
+describe('Service: appointmentDataService', function () {
 
   // load the service's module
   beforeEach(module('armsAngularApp'));
 
   // instantiate service
-  var appointments/appointmentDataservice;
-  beforeEach(inject(function (_appointments/appointmentDataservice_) {
-    appointments/appointmentDataservice = _appointments/appointmentDataservice_;
+  var appointmentDataService;
+  beforeEach(inject(function (_appointmentDataservice_) {
+    appointmentDataService = appointmentDataservice_;
   }));
 
   it('should do something', function () {
-    expect(!!appointments/appointmentDataservice).toBe(true);
+    expect(!!appointments/appointmentDataService).toBe(true);
   });
 
 });

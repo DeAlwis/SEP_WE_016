@@ -14,9 +14,4 @@ angular.module('armsAngularApp')
           'AngularJS',
           'Karma'
         ];
-
-
-
-
-
 }]);

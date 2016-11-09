@@ -5,11 +5,10 @@
  * this app
  */
 var Sequelize = require('sequelize');
-var sequelize = require('sequelize')
-    , sequelize = new Sequelize('acadamic', 'root', '', {
+var sequelize = require('sequelize');
+     sequelize = new Sequelize('acadamic', 'root', '1234', {
       dialect: "mysql",
       port:    3306,
     });
 
 module.exports = sequelize;
-

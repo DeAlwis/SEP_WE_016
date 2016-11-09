@@ -9,7 +9,7 @@
 angular.module('armsAngularApp')
   .directive('navBarUserLecturerList', function () {
     return {
-      templateUrl: 'views/master/navbar-user-student-list.html',
+      templateUrl: 'views/master/navbar-user-lecturer-list.html',
       restrict: 'A',
       controller: 'NavbarCtrlUser',
       link: function postLink(scope, element, attrs) {

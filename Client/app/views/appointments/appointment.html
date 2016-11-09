@@ -6,108 +6,27 @@
         <section class="content-header">
             <h1>Appointments</h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Examples</a></li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#">Examples</a>
+                </li>
                 <li class="active">Blank page</li>
             </ol>
         </section>
         <!-- Main content -->
         <section class="content">
-            <div ng-if="user.role=='student'" class="row">
-                <div class="col-md-6" ng-controller="AppointmentRequestsCtrl">
-                    <div class="box box-orange">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Make an appointment request</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <form role="form" novalidate name="appointmentRequestForm" ng-submit="submitAppointmentRequestForm(appointmentRequestForm.$valid)" method="post">
-                            <div class="box-body">
-                                <div class="form-group" ng-class="{ 'has-error' : (appointmentRequestForm.subject.$invalid && appointmentRequestForm.$submitted )}">
-                                    <label for="selectSubject">Subject</label>
-                                    <select ui-select2 ng-model="appointmentRequest.SubjectId" name="subject" id="selectSubject" theme="select2" class="form-control select2" data-placeholder="Pick a subject" required>
-                                        <option value=""></option>
-                                        <option ng-repeat="subject in subjects" value="{{subject.id}}">{{subject.subjectName}}</option>
-                                    </select>
-                                    <p ng-show="(appointmentRequestForm.subject.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Subject is required.</p>
-                                </div>
-                                <div class="form-group" ng-class="{ 'has-error' : (appointmentRequestForm.lecture.$invalid && appointmentRequestForm.$submitted )}">
-                                    <label for="selectLecture">Lecture</label>
-                                    <select ui-select2 ng-model="appointmentRequest.LecturerId" name="lecture" id="selectLecture" theme="select2" class="form-control select2" data-placeholder="Pick a lecture" required>
-                                        <option value=""></option>
-                                        <option ng-repeat="lecture in lectures" value="{{lecture.id}}">{{lecture.lecturerFullName}}</option>
-                                    </select>
-                                    <p ng-show="(appointmentRequestForm.lecture.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Lecture is required.</p>
-                                </div>
-                                <div class="form-group" ng-class="{ 'has-error' : (appointmentRequestForm.requestTitle.$invalid && !appointmentRequestForm.requestTitle.$pristine) || (appointmentRequestForm.requestTitle.$invalid && appointmentRequestForm.$submitted )}">
-                                    <label for="enterRequestTitle">Request Title</label>
-                                    <input type="text" ng-model="appointmentRequest.requestTitle" name="requestTitle" class="form-control" id="enterRequestTitle" placeholder="Reason for appointment" required>
-                                    <p ng-show="(appointmentRequestForm.requestTitle.$invalid && !appointmentRequestForm.requestTitle.$pristine) || (appointmentRequestForm.requestTitle.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Request title required.</p>
-                                </div>
-                                <div class="form-group" ng-class="{ 'has-error' : (appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted )}">
-                                    <label for="enterRequestTitle">Date</label>
-                                    <p class="input-group">
-                                        <input type="text" required name="date" class="form-control" min-date="minDate" uib-datepicker-popup ng-model="appointmentRequest.requestDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-                                        <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                      </span> {{datePicker}}
-                                    </p>
-                                    <p ng-show="(appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Date is required.</p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="enterRequestTitle">Time</label>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="text-italic">From</label>
-                                            {{startTime}}
-                                            <div uib-timepicker ng-model="appointmentRequest.requestStartTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="text-italic">To</label>
-                                            <div uib-timepicker ng-model="appointmentRequest.requestEndTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group" ng-class="{ 'has-error' : (appointmentRequestForm.brief.$invalid && !appointmentRequestForm.brief.$pristine) || (appointmentRequestForm.brief.$invalid && appointmentRequestForm.$submitted )}">
-                                    <label for="enterRequestBrief">Small Brief</label>
-                                    <textarea ng-model="appointmentRequest.requestSmallBref" name="brief" required id="enterRequestBrief" placeholder="Small description" class="form-control" rows="8" cols="40"></textarea>
-                                    <p ng-show="(appointmentRequestForm.brief.$invalid && !appointmentRequestForm.brief.$pristine) || (appointmentRequestForm.brief.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Small brief required.</p>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-primary pull-right">SEND REQUEST</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="box box-orange">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">My appointments</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <div class="box-body">
-                            <div ng-controller="RequestTableCtrl as showCase">
-                                <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="table table-striped table-bordered"></table>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            {{role}}
-                        </div>
-                        <!-- /.box-footer -->
-                    </div>
-                </div>
-            </div>
-            <div ng-if="user.role=='lecture'" class="row">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="box box-orange">
                         <div class="box-header with-border">
                             <h3 class="box-title">My Appointments</h3>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
@@ -115,103 +34,11 @@
                         <!-- form start -->
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div ng-controller="AppointmentTableCtrl as showCase">
-                                        <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="table table-striped table-bordered"></table>
+                                        <button type="button" ng-click="reload()" class="btn btn-info" name="button"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                                        <table datatable="" dt-options="showCase.dtOptions" dt-instance="showCase.dtInstance" dt-columns="showCase.dtColumns" class="table table-striped table-bordered"></table>
                                     </div>
-                                </div>
-                                <div class="col-md-6 action-wrapper">
-                                <div class="">
-                                    <form class="form-horizontal" ng-submit="sendAppoinmentData()">
-                                        <div class="box-body">
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">    
-                                                    <label for="inputEmail3" class=" control-label ">DIT</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <label class="control-label  "><a href="">{{DIT}}</a></label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">    
-                                                    <label for="inputEmail3" class=" control-label  ">Student Name</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <label class="control-label  "><a href="">Student Name</a></label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">    
-                                                    <label for="inputEmail3" class=" control-label  ">Student Year</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <label class="control-label  "><a href="">Student Year</a></label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">    
-                                                    <label for="inputEmail3" class=" control-label  ">Request Title</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <label class="control-label  ">{{pendingRequest.requestTitle}}</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">    
-                                                    <label for="inputEmail3" class=" control-label  ">Request Description</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <label class="control-label  ">{{pendingRequest.requestSmallBref}}</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4">    
-                                                    <label for="inputEmail3" class=" control-label  ">Appointment Date</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                   <p class="input-group">
-                                                       <input type="text" required name="date" class="form-control" min-date="minDate" uib-datepicker-popup ng-model="pendingRequest.appointmentDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-                                                       <span class="input-group-btn">
-                                                       <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                     </span> {{datePicker}}
-                                                   </p>
-                                                   <p ng-show="(appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Date is required.</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4"> 
-                                                    <label for="enterRequestTitle" class="control-label  ">Start Time</label>   
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <div uib-timepicker ng-model="pendingRequest.appointmentStartTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-sm-4"> 
-                                                    <label for="enterRequestTitle" class="control-label  ">End Time</label>   
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <div uib-timepicker ng-model="pendingRequest.appointmentEndTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
-
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                        <!-- /.box-body -->
-                                        <div class="box-footer">
-                                            <button type="submit" class="btn btn-danger pull-right">Cancel Appointment</button> 
-                                            <button type="submit" class="btn btn-warning pull">Reschedule Appointment</button> 
-                                        </div>
-                                        <!-- /.box-footer -->
-                                    </form>
-                                </div>
                                 </div>
                             </div>
                         </div>
@@ -225,119 +52,17 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Appointment Requests</h3>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i><button>
                             </div>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div ng-controller="RequestTableCtrl as showCase">
-                                        <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="table table-striped table-bordered"></table>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 action-wrapper">
-                                    <div class="">
-                                        <form class="form-horizontal" ng-submit="sendAppoinmentData()">
-                                            <div class="box-body">
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4">    
-                                                        <label for="inputEmail3" class=" control-label ">DIT</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <label class="control-label  "><a href="">{{DIT}}</a></label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4">    
-                                                        <label for="inputEmail3" class=" control-label  ">Student Name</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <label class="control-label  "><a href="">Student Name</a></label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4">    
-                                                        <label for="inputEmail3" class=" control-label  ">Student Year</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <label class="control-label  "><a href="">Student Year</a></label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4">    
-                                                        <label for="inputEmail3" class=" control-label  ">Request Title</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <label class="control-label  ">{{pendingRequest.requestTitle}}</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4">    
-                                                        <label for="inputEmail3" class=" control-label  ">Request Description</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <label class="control-label  ">{{pendingRequest.requestSmallBref}}</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4">    
-                                                        <label for="inputEmail3" class=" control-label  ">Appointment Date</label>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                       <p class="input-group">
-                                                           <input type="text" required name="date" class="form-control" min-date="minDate" uib-datepicker-popup ng-model="pendingRequest.appointmentDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-                                                           <span class="input-group-btn">
-                                                           <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                         </span> {{datePicker}}
-                                                       </p>
-                                                       <p ng-show="(appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Date is required.</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4"> 
-                                                        <label for="enterRequestTitle" class="control-label  ">Start Time</label>   
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <div uib-timepicker ng-model="pendingRequest.appointmentStartTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4"> 
-                                                        <label for="enterRequestTitle" class="control-label  ">End Time</label>   
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <div uib-timepicker ng-model="pendingRequest.appointmentEndTime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-sm-4"> 
-                                                        <label for="enterRequestTitle" class="control-label  ">Reserve Room</label>   
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <select ui-select2 ng-model="pendingRequest.RoomId" name="subject" id="selectSubject" theme="select2" class="form-control select2" data-placeholder="Pick a room" required>
-                                                            <option value=""></option>
-                                                            <option ng-repeat="room in rooms" value="{{room.id}}">{{room.roomName}}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <!-- /.box-body -->
-                                            <div class="box-footer">
-                                                <button type="submit" class="btn btn-success pull-right">Make Appointment</button> 
-                                            </div>
-                                            <!-- /.box-footer -->
-                                        </form>
+                                <div class="col-md-12">
+                                    <div ng-controller="PendingAppointmentsRequestTableCtrl as showCase">
+                                        <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="table table-striped table-bordered"></table>
                                     </div>
                                 </div>
                             </div>
@@ -354,6 +79,234 @@
         <!-- ./main content  -->
     </div>
     <!-- /.container-->
+    <reshedule-modal-lecture role="{{user_role}}"></reshedule-modal-lecture>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" ng-submit="placeAppoinment()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label ">DIT</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{pendingRequest.Student.studentDitNo}}</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Student Name</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{pendingRequest.Student.User.userUserName}}</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Batch Time Table</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="" ng-click="showTimeTable('make')">Click here !</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                    <div class="col-sm-4">
+                      <label for="inputEmail3" class=" control-label  ">Student Year</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <label class="control-label  ">
+                        <a href="">Student Year</a>
+                      </label>
+                    </div>
+                  </div> -->
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Request Title</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">{{pendingRequest.requestTitle}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Request Description</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">{{pendingRequest.requestSmallBref}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                               <!--  <label class=" control-label" >{{pendingRequest.appointmentDate}}</label> -->
+                                    <input  type="text" bs-datepicker data-min-date="today" data-autoclose="1" data-date-format="dd-MM-yyyy" type="text" class="form-control" ng-model="pendingRequest.appointmentDate" name="date" ng-change="clearTimeSlots()">
+                                    <p ng-show="(appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Date is required.</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="enterRequestTitle" class="control-label  ">Time Slot</label>
+                                </div>
+                                <div class="col-sm-8">
+                                <label class="control-label  ">{{pendingRequest.fromTime}}&nbsp;-&nbsp;{{pendingRequest.toTime}}&nbsp;({{pendingRequest.appointmentDay}})</label>&nbsp;<a ng-click="getMoreAvailableTimeSlots ()" href="">more time slots</a>  
+                                    <a ng-repeat=" timeSlot in availableTimeSlots" ng-class="{'btn-success text-white' : pendingRequest.timeSlot.id == timeSlot.id }" ng-click="selectTimeSlot(timeSlot)" class="btn btn-time-slot btn-default">
+                                      <strong>{{timeSlot.day}}</strong><br>{{timeSlot.fromTime}}-{{timeSlot.toTime}}
+                                    </a>
+<!--                                     <a class="btn btn-time-slot btn-default">
+                                        <strong>{{pendingRequest.appointmentDay}}</strong>
+                                        <br>{{pendingRequest.fromTime}}-{{pendingRequest.toTime}}
+                                    </a> -->
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="enterRequestTitle" class="control-label  ">Available Rooms</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a ng-repeat=" room in rooms" ng-class="{'btn-success text-white' : pendingRequest.selectedRoom.id == room.id }" ng-click="selectRoom(room)" class="btn btn-time-slot btn-default">
+                                        <strong>{{room.id}}</strong>
+                                        <br>{{room.roomName}}
+                                    </a>                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                              <div class="col-sm-4">
+                                  <label for="enterRequestTitle" class="control-label  ">Note from Student</label>                                  
+                              </div>
+                              <div class="col-sm-8">
+                                <span>{{pendingRequest.appointmentNoteStudent}}</span>
+                              </div>
+                            </div>     
+
+                            <div class="form-group row">
+                              <div class="col-sm-4">
+                                  <label for="enterRequestTitle" class="control-label  ">Note for Student</label>                                  
+                              </div>
+                              <div class="col-sm-8">
+                                <textarea class="form-control" ng-model="appointmentNoteLecturer" rows="8" cols="40"></textarea>
+                              </div>
+                            </div>                           
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success pull-right">Make Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- /.content-wrapper -->
+<!-- Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" ng-submit="placeAppoinment()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Appointment Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label ">Lecture Name</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{appoinment.TimeSlot.Lecturer.User.userFullname}}</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Subject Name</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" bs-datepicker data-min-date="today" data-autoclose="1" data-date-format="dd-MM-yyyy" type="text" class="form-control" ng-model="appoinment.appointmentDate" name="date" ng-change="dataChange()">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Time Slot</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a class="btn btn-time-slot btn-default">{{appoinment.fromTime}}-{{appoinment.toTime}}</a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Venue</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a class="btn btn-time-slot btn-default">
+                                        <strong>{{appoinment.room.id}}</strong>
+                                        <br>{{appoinment.room.roomName}}</a>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                    <div class="col-sm-4">
+                      <label for="enterRequestTitle" class="control-label  ">Time Slot</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <a class="btn btn-time-slot btn-default">
+                        <strong>{{pendingRequest.appointmentDay}}</strong><br>{{pendingRequest.fromTime}}-{{pendingRequest.toTime}}</a>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-4">
+                      <label for="enterRequestTitle" class="control-label  ">Available Rooms</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <a ng-repeat=" room in rooms" ng-class="{'btn-success text-white' : pendingRequest.selectedRoom.id == room.id }" ng-click="selectRoom(room)" class="btn btn-time-slot btn-default">
+                        <strong>{{room.id}}</strong><br>{{room.roomName}}</a>
+                    </div>
+                  </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success pull-right">Make Reschedule Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div footer></div>

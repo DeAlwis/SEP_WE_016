@@ -8,55 +8,103 @@
  */
 angular.module('armsAngularApp')
     .controller('AppointmentRequestsCtrl', [
+        '$rootScope',
         '$scope',
         '$log',
-        'appointmentDataservice',
+        'appointmentDataService',
         'moment',
-        function($scope, $log, appointmentDataservice, moment) {
+        function($rootScope, $scope, $log, appointmentDataService, moment) {
             $scope.subjects = [];
             $scope.lectures = [];
             $scope.appointmentRequest = {};
-            console.log("called");
+            $scope.appointmentData = {};
+            $scope.called = false;
+
+            var resetEverything = function() {
+                $scope.called = false;
+                $scope.appointmentRequest = {};
+                $scope.availableTimeSlots = '';
+                //load all lecture details to select2 component
+                appointmentDataService.getAllLectures().then(
+                    function(response) {
+                        $scope.lectures = response.data;
+                    },
+                    function(error) {
+                        console.error(error);
+                    }
+                );
+                //load all lecture details to select2 component
+                appointmentDataService.getAllSubjects().then(
+                    function(response) {
+                        $scope.subjects = response.data;
+                    },
+                    function(error) {
+                        console.error(error);
+                    }
+                );
+            };
             //send request data to server
             $scope.submitAppointmentRequestForm = function(isValid) {
                 console.log($scope.appointmentRequestForm);
                 if (isValid) {
-                    //convert date to SQL format
-                    $scope.appointmentRequest.requestDate = moment($scope.appointmentRequest.requestDate).format("YYYY-MM-DD");
-                    //convert time to SQL format
-                    $scope.appointmentRequest.requestStartTime = moment($scope.appointmentRequest.requestStartTime).format("HH:mm");
-                    $scope.appointmentRequest.requestEndTime = moment($scope.appointmentRequest.requestEndTime).format("HH:mm");
-                    //set status to 1
-                    $scope.appointmentRequest.status = 1;
-                    //invoke post method and pass $scope.appointmentRequest as a JSON object 
-                    appointmentDataservice.sendRequest($scope.appointmentRequest).then(
+                    //get logged in user
+                    $scope.appointmentRequest.student = $rootScope.user;
+                    //invoke post method and pass $scope.appointmentRequest as a JSON object
+                    appointmentDataService.sendRequest($scope.appointmentRequest).then(
                         function(response) {
                             console.log(response);
-                            swal({ title: "Request Sent", text: "You request has been successfully send", type: "success", timer: 2000 })
+                            appointmentDataService.refreshTables();
+                            swal({
+                                title: "Request Sent",
+                                text: "You request has been successfully send",
+                                type: "success",
+                                timer: 2000
+                            });
                         },
                         function(error) {
                             console.error(error);
                         }
                     );
                     console.log($scope.appointmentRequest);
-                    //reset statue
-                    if (true) {
-                        $scope.appointmentRequest = {};
-                        $scope.appointmentRequestForm.$setPristine();
-                    }
+                    resetEverything();
+                    $scope.appointmentRequestForm.$setPristine();
+
+
                 }
-            }
-            //load all lecture details to select2 component 
-            appointmentDataservice.getAllLectures().then(
+            };
+
+            $scope.submitAppoinmentReshedule = function() {
+              appointmentDataService.sendRescheduleRequest($scope.appointmentData).then(function (response) {
+                 angular.element("#resheduleModal").modal('hide');             
+                swal({
+                    title: "Request Sent",
+                    text: "You reschedule request has been successfully send",
+                    type: "success",
+                    timer: 2000
+                });
+              }, function (error) {
+                /* body... */
+              });
+            };
+
+            $scope.reload = function() {
+                appointmentDataService.refreshTables();
+            };
+
+
+            //load all lecture details to select2 component
+            appointmentDataService.getAllLectures().then(
                 function(response) {
                     $scope.lectures = response.data;
+                    console.log("All Lecturers");
+                    console.log(response.data);
                 },
                 function(error) {
                     console.error(error);
                 }
             );
-            //load all lecture details to select2 component 
-            appointmentDataservice.getAllSubjects().then(
+            //load all lecture details to select2 component
+            appointmentDataService.getAllSubjects().then(
                 function(response) {
                     $scope.subjects = response.data;
                 },
@@ -64,44 +112,66 @@ angular.module('armsAngularApp')
                     console.error(error);
                 }
             );
-            /*********************************
-                ANGULAR UI DATEPICKER CONFIGS 
-             *********************************/
-            $scope.today = function() {
-                $scope.appointmentRequest.requestDate = new Date();
+
+            $scope.dataChange = function() {
+                appointmentDataService.getAvailableTimeSlots({ id: this.appointmentRequest.LecturerId, date: this.appointmentRequest.selectedDate }).then(
+                    function(response) {
+                        console.log(response);
+                        $scope.called = true;
+                        $scope.availableTimeSlots = response.data;
+                    },
+                    function(error) {
+                        console.error(error);
+                    });
             };
-            $scope.clear = function() {
-                $scope.appointmentRequest.requestDate = null;
+
+            $scope.selectTimeSlot = function(timeSlot) {
+                $scope.appointmentRequest.selectedTimeSlot = timeSlot;
+                $scope.appointmentData.TimeSlot = timeSlot;
+                console.log(timeSlot);
             };
-            $scope.dateOptions = {
-                formatYear: 'yy',
-                maxDate: new Date(2020, 5, 22),
-                minDate: new Date(),
-                startingDay: 1
+
+            $scope._24hoursToAmPm = function(time) {
+                return moment(time, 'HH:mm:ss').format("hh:mm A");
             };
-            $scope.open2 = function() {
-                $scope.popup2.opened = true;
+
+            $scope.$on('requestTableRowClick', function() {
+                $scope.appoinment = {};
+                $scope.appointmentData = {};
+                resetEverything();
+                appointmentDataService.getAppointmentMoreDetails(appointmentDataService.message).then(
+                    function(response) {
+                        var data = response.data;
+                        $scope.appoinment.id = data.id;
+                        $scope.appoinment.Lecturer = data.TimeSlot.Lecturer;
+                        $scope.appoinment.Student = data.Student;
+                        $scope.appoinment.appointmentDate = moment(data.appointmentDate).toDate();
+                        $scope.appoinment.appointmentDay = data.TimeSlot.day;
+                        $scope.appoinment.fromTime = moment(data.TimeSlot.fromTime, 'HH:mm:ss').format("hh:mm A");
+                        $scope.appoinment.toTime = moment(data.TimeSlot.toTime, 'HH:mm:ss').format("hh:mm A");
+                        $scope.appoinment.TimeSlot = data.TimeSlot;
+                        $scope.appoinment.room = data.Room;
+                        console.log(data);
+                        $scope.appointmentData = data;
+
+
+                    }
+                );
+            });
+
+            $scope.getMoreAvailableTimeSlots = function() {
+                appointmentDataService.getMoreAvailableTimeSlots({
+                    appointmentDate: $scope.appointmentData.appointmentDate,
+                    LecturerId: $scope.appointmentData.TimeSlot.LecturerId,
+                }).then(
+                    function(response) {
+                        $scope.availableTimeSlots = [];
+                        $scope.availableTimeSlots = response.data;
+                        console.log(response.data);
+                    }
+                );
             };
-            $scope.setDate = function(year, month, day) {
-                $scope.appointmentRequest.requestDate = new Date(year, month, day);
-                console.log($scope.appointmentRequest.requestDate);
-            };
-            $scope.popup2 = {
-                opened: false
-            };
-            /*********************************
-                ANGULAR UI TIMEPICKER CONFIGS
-             *********************************/
-            $scope.appointmentRequest.requestStartTime = $scope.appointmentRequest.requestEndTime = new Date();
-            $scope.hstep = 1;
-            $scope.mstep = 1;
-            $scope.ismeridian = true;
-            $scope.toggleMode = function() {
-                $scope.ismeridian = !$scope.ismeridian;
-            };
-            $scope.changed = function() {
-                console.log('startTime' + $scope.appointmentRequest.requestEndTime);
-                //console.log('endTime' + $scope.endTime);
-            };
+            //console.log(appointmentDataService);
+
         }
     ]);

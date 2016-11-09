@@ -1,0 +1,129 @@
+<div nav-bar-user></div>
+<!-- Full Width Column -->
+<div class="content-wrapper">
+    <div class="container">
+
+        <section class="content-header">
+            <h1>
+                Blank page
+                <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/">
+                        <i class="fa fa-dashboard"></i>
+                        Home</a>
+                </li>
+                <li>
+                    <a href="#">Examples</a>
+                </li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+             <!--Default box -->
+            <div class="box box-orange">
+                <div class="box-header with-border">
+                    <h3 class="box-title">My default appointments schedule</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="box-body">
+
+                    <div class="row header-row">
+                        <div class="col-md-3">
+                            <h4>Availability</h4>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4>From</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4>To</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row data-row" ng-repeat="day in days">
+                        <div class="col-md-3">
+                            <input type="checkbox" ng-model="day.checked" name="name" value="">
+                            <label for="">{{day.day}}</label>
+
+                            <button ng-disabled="!day.checked" type="button" name="button"
+                                    ng-click="addTimeSlot($index)" class="btn btn-sm btn-default pull-right">+time slot
+                            </button>
+                        </div>
+
+                        <fieldset ng-disabled="!day.checked" class="col-md-9">
+                            <div class="row time-slot-wrapper" ng-repeat="timeSlot in day.timeSlots">
+
+                                <div class="col-md-4">
+                                    <input ng-disabled="timeSlot.visibility" type="text" class="form-control" size="8" ng-model="timeSlot.from"
+                                           name="time" bs-timepicker data-min-time="8:00 am" data-max-time="8:00 pm">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <input  ng-disabled="timeSlot.visibility" type="text" class="form-control" size="8" ng-model="timeSlot.to" name="time"
+                                           bs-timepicker data-min-time="8:00 am" data-max-time="8:00 pm">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <!-- {{$parent.$index}}
+                                    {{ $index}} -->
+                                    <button ng-show="timeSlot.status"  type="button" ng-click="toggleVisibility($parent.$index,$index)"
+                                            name="button" class="btn btn-sm btn-default">
+                                        <i ng-show="!timeSlot.visibility" class="fa fa-eye" aria-hidden="true"></i>
+                                        <i ng-show="timeSlot.visibility" class="fa fa-eye-slash" aria-hidden="true"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button ng-show="!timeSlot.status"  type="button" ng-click="saveTimeSlot($parent.$index,$index)" name="button"
+                                            class="btn btn-sm btn-success">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button ng-show="timeSlot.status" ng-disabled="timeSlot.visibility"  type="button" ng-click="updateTimeSlot($parent.$index,$index)" name="button"
+                                            class="btn btn-sm btn-info">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button type="button" ng-click="removeTimeSlot($parent.$index,$index)" name="button"
+                                            class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <!-- ./time-slot-wrapper -->
+                        </fieldset>
+                        <!-- ./col-md-8" -->
+                    </div>
+                    <!-- ./row data-row -->
+
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    Footer
+                </div>
+                <!-- /.box-footer-->
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+
+    </div>
+    <!-- /.container-->
+</div>
+<!-- /.content-wrapper -->
+<div footer></div>

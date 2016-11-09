@@ -1,0 +1,36 @@
+<div ng-controller="SubjectsCtrl">
+    <!--<script type="text/ng-template" id="myModalContent.html">-->
+            <div class="box-body modal-body">
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        <label class="pull-right">Subject Name</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="subjectName" required="true" placeholder="new subject name eg:DCCN" ng-model="updateSubjectName" required="true">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        <label class="pull-right">Subject Code</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="subjectCode" required="true" placeholder="new subject Code eg:IT001" ng-model="updateSubjectCode" required="true">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        <label class="pull-right">Subject Credit</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="subjectCredit" required="true" placeholder="new subject credit eg:2" ng-model="updateSubjectCredit" required="true">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" ng-click="updateSubjectForm(updateSubjectName, updateSubjectCode, updateSubjectCredit);">
+                        <i class="fa fa-pencil"></i>
+                        Update {{updateSubjectName}}
+                    </button>
+                </div>
+            </div>
+    <!--</script>-->
+</div>

@@ -1,5 +1,10 @@
+'use strict';
 /**
- * Created by DeAlwis on 10/15/2016.
+ * @ngdoc service
+ * @name armsAngularApp.appointments/AuthenticationService
+ * @description
+ * # appointments/AuthenticationService
+ * Service in the armsAngularApp.
  */
 angular.module('armsAngularApp')
     .service('AuthenticationService', function($q, $http, API_ENDPOINT) {

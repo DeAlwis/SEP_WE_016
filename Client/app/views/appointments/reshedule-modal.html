@@ -1,0 +1,290 @@
+<!-- Modal -->
+<div class="modal fade" id="resheduleModal" tabindex="-1" role="dialog" aria-labelledby="resheduleModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+            <form ng-if="role == 'Student'" class="form-horizontal" ng-submit="submitAppoinmentReshedule()">            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label ">DIT</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{appointmentData.Student.studentDitNo}}</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div ng-if="role == 'Student'" class="form-group row">
+                                <div class="col-sm-4"> 
+                                    <label  for="inputEmail3" class=" control-label  ">Student Name</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{appointmentData.TimeSlot.Lecturer.User.userUserName}}</a>
+                                    </label>
+                                </div>
+                            </div>                            
+
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                                <div class="col-sm-4">
+                                    <label  for="inputEmail3" class=" control-label  ">Lecture Name</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{appointmentData..User.userUserName}}</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label ng-if="role == 'Lecturer'" for="inputEmail3" class=" control-label  ">Batch Time Table</label>
+                                    <label ng-if="role == 'Student'" for="inputEmail3" class=" control-label  ">My Time Table</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="" ng-click="showTimeTable('make')">Click here !</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                    <div class="col-sm-4">
+                      <label for="inputEmail3" class=" control-label  ">Student Year</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <label class="control-label  ">
+                        <a href="">Student Year</a>
+                      </label>
+                    </div>
+                  </div> -->
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Title</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">{{appointmentData.appointmentTitle}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Description</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">{{appointmentData.appointmentSmallBref}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                               <!--  <label class=" control-label" >{{appointmentData.appointmentDate}}</label> -->
+                                    <input  type="text" bs-datepicker data-min-date="today" data-autoclose="1" data-date-format="dd-MM-yyyy" type="text" class="form-control" ng-model="appointmentData.appointmentDate" name="date" ng-change="clearTimeSlots()">
+                                    <p ng-show="(appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Date is required.</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="enterRequestTitle" class="control-label  ">Time Slot</label>
+                                </div>
+                                <div class="col-sm-8">
+                                <label class="control-label  ">{{ _24hoursToAmPm(appointmentData.TimeSlot.fromTime)}}&nbsp;-&nbsp;{{ _24hoursToAmPm(appointmentData.TimeSlot.toTime)}}&nbsp;({{appointmentData.TimeSlot.day}})</label>&nbsp;<a ng-click="getMoreAvailableTimeSlots ()" href="">more time slots</a>  
+                                    <a ng-repeat=" timeSlot in availableTimeSlots" ng-class="{'btn-success text-white' : appointmentData.TimeSlot.id == timeSlot.id }" ng-click="selectTimeSlot(timeSlot)" class="btn btn-time-slot btn-default">
+                                      <strong>{{timeSlot.day}}</strong><br>{{timeSlot.fromTime}}-{{timeSlot.toTime}}
+                                    </a>
+<!--                                     <a class="btn btn-time-slot btn-default">
+                                        <strong>{{appointmentData.appointmentDay}}</strong>
+                                        <br>{{appointmentData.fromTime}}-{{appointmentData.toTime}}
+                                    </a> -->
+                                </div>
+                            </div>
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="enterRequestTitle" class="control-label  ">Available Rooms</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a ng-repeat=" room in rooms" ng-class="{'btn-success text-white' : appointmentData.selectedRoom.id == room.id }" ng-click="selectRoom(room)" class="btn btn-time-slot btn-default">
+                                        <strong>{{room.id}}</strong>
+                                        <br>{{room.roomName}}
+                                    </a>                                    
+                                </div>
+                            </div>
+
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                              <div class="col-sm-4">
+                                  <label for="enterRequestTitle" class="control-label  ">Note from Student</label>                                  
+                              </div>
+                              <div class="col-sm-8">
+                                <span>{{appointmentData.appointmentNoteStudent}}</span>
+                              </div>
+                            </div>     
+
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                              <div class="col-sm-4">
+                                  <label for="enterRequestTitle" class="control-label  ">Note for Student</label>                                  
+                              </div>
+                              <div class="col-sm-8">
+                                <textarea class="form-control" ng-model="appointmentData.appointmentNoteLecturer" rows="8" cols="40"></textarea>
+                              </div>
+                            </div>
+
+                            <div ng-if="role == 'Student'" class="form-group row">
+                              <div class="col-sm-4">                                 
+                                  <label for="enterRequestTitle" class="control-label  ">Note form Lecture</label>
+                              </div>
+                              <div class="col-sm-8">
+                                <span>{{appointmentData.appointmentNoteLecturer}}</span>
+                                
+                              </div>
+                            </div>                        
+
+                            <div ng-if="role == 'Student'" class="form-group row">
+                              <div class="col-sm-4">                                 
+                                  <label for="enterRequestTitle" class="control-label  ">Note for Lecture</label>
+                              </div>
+                              <div class="col-sm-8">                                
+                                <textarea class="form-control" ng-model="appointmentData.appointmentNoteStudent" rows="8" cols="40"></textarea>
+                              </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success pull-right">Make Reschedule Request</button>
+                </div>
+            </form>
+
+            <form ng-if="role == 'Lecturer'" class="form-horizontal" ng-submit="submitAppoinmentReshedule()">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label ">DIT</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{appointmentData.Student.studentDitNo}}</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div ng-if="role == 'Student'" class="form-group row">
+                                <div class="col-sm-4"> 
+                                    <label  for="inputEmail3" class=" control-label  ">Student Name</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">
+                                        <a href="">{{appointmentData.TimeSlot.Lecturer.User.userUserName}}</a>
+                                    </label>
+                                </div>
+                            </div>                          
+
+
+                            <!-- <div class="form-group row">
+                    <div class="col-sm-4">
+                      <label for="inputEmail3" class=" control-label  ">Student Year</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <label class="control-label  ">
+                        <a href="">Student Year</a>
+                      </label>
+                    </div>
+                  </div> -->
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Title</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">{{appointmentData.appointmentTitle}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Description</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label class="control-label  ">{{appointmentData.appointmentSmallBref}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="inputEmail3" class=" control-label  ">Appointment Date</label>
+                                </div>
+                                <div class="col-sm-8">
+                               <!--  <label class=" control-label" >{{appointmentData.appointmentDate}}</label> -->
+                                    <input  type="text" bs-datepicker data-min-date="today" data-autoclose="1" data-date-format="dd-MM-yyyy" type="text" class="form-control" ng-model="appointmentData.appointmentDate" name="date" ng-change="clearTimeSlots()">
+                                    <p ng-show="(appointmentRequestForm.date.$invalid && appointmentRequestForm.$submitted ) " class="help-block">Date is required.</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="enterRequestTitle" class="control-label  ">Time Slot</label>
+                                </div>
+                                <div class="col-sm-8">
+                                <label class="control-label  ">{{ _24hoursToAmPm(appointmentData.TimeSlot.fromTime)}}&nbsp;-&nbsp;{{ _24hoursToAmPm(appointmentData.TimeSlot.toTime)}}&nbsp;({{appointmentData.TimeSlot.day}})</label>&nbsp;<a ng-click="getMoreAvailableTimeSlots2 ()" href="">more time slots</a>  
+                                    <a ng-repeat=" timeSlot in availableTimeSlots" ng-class="{'btn-success text-white' : appointmentData.TimeSlot.id == timeSlot.id }" ng-click="selectTimeSlot(timeSlot)" class="btn btn-time-slot btn-default">
+                                      <strong>{{timeSlot.day}}</strong><br>{{timeSlot.fromTime}}-{{timeSlot.toTime}}
+                                    </a>
+<!--                                     <a class="btn btn-time-slot btn-default">
+                                        <strong>{{appointmentData.appointmentDay}}</strong>
+                                        <br>{{appointmentData.fromTime}}-{{appointmentData.toTime}}
+                                    </a> -->
+                                </div>
+                            </div>
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="enterRequestTitle" class="control-label  ">Available Rooms</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a ng-repeat=" room in rooms" ng-class="{'btn-success text-white' : appointmentData.Room.id == room.id }" ng-click="selectRoom(room)" class="btn btn-time-slot btn-default">
+                                        <strong>{{room.id}}</strong>
+                                        <br>{{room.roomName}}
+                                    </a>                                    
+                                </div>
+                            </div>
+
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                              <div class="col-sm-4">
+                                  <label for="enterRequestTitle" class="control-label  ">Note from Student</label>                                  
+                              </div>
+                              <div class="col-sm-8">
+                                <span>{{appointmentData.appointmentNoteStudent}}</span>
+                              </div>
+                            </div>     
+
+                            <div ng-if="role == 'Lecturer'" class="form-group row">
+                              <div class="col-sm-4">
+                                  <label for="enterRequestTitle" class="control-label  ">Note for Student</label>                                  
+                              </div>
+                              <div class="col-sm-8">
+                                <textarea class="form-control" ng-model="appointmentData.appointmentNoteLecturer" rows="8" cols="40"></textarea>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success pull-right">Make Reschedule</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
